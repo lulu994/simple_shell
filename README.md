@@ -114,7 +114,7 @@ Simple shell 0.4 +
 
 Implement the env built-in, that prints the current environment
 
-#### [6. Simple shell 0.1.1](gitline.c)
+#### [6. Simple shell 0.1.1](getline.c)
 
 Simple shell 0.1 +
 
