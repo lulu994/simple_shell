@@ -16,7 +16,7 @@ int main (void)
 	{
 		printf("$ ");
 		fflush(stdout);
-		getline();
+		getline(&comman, &command_len, stdin);
 		printf("%s", command);
 	}
 	return (0);
