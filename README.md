@@ -155,7 +155,7 @@ Implement the setenv and unsetenv builtin commands
      * Command syntax: unsetenv VARIABLE
      * Should print something on stderr on failure
 
-#### [10. cd]
+#### [10. cd](cd.c)
 
 Simple shell 1.0 +
 
