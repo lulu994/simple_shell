@@ -30,34 +30,10 @@ void prompt(void)
   */
 void execute_command(char *command)
 {
-	char *args[MAX_COMMAND_LENGTH];
-	char *token;
-	int i = 0;
-	token = strtok(command, " \t\n");
-
-	while (token != NULL) {
-        args[i++] = token;
-        token = strtok(NULL, " \t\n");
-    }
-    args[i] = NULL;
-
-    pid_t pid = fork();
-
-    if (pid == 0)
-    {
-	    execve(args[0], args, environ);
-	    exit(1);
-    }
-    else if (pid < 0) {
-		 write(1, "Fork failed.\n", 13);
-		 exit(1);
-		 } else {
-			 int status;
-			 waitpid(pid, &status, 0);
-			 if (status != 0) {
-				   write(1, "Command execution failed.\n", 26);
-			 }
-		 }
+	char* args[] = {command, NULL};
+	if (execve(command, args, environ) == -1)
+		 write(STDERR_FILENO, "Error executing command\n", sizeof("Error executing command\n") - 1);
+	 exit(1);
 }
 /**
   *main - entry point
