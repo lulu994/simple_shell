@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "shell.h"
 
 /**
  * main - entry point
@@ -20,9 +19,11 @@ int main (void)
 		if (getline(&command, &command_len, stdin) == -1)
 		{
 			printf("Can't read\n");
-			exit (1);
+			break;
 		}
 		printf("%s", command);
 	}
+
+	free(command);
 	return (0);
 }

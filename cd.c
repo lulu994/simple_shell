@@ -23,7 +23,11 @@ void cd(char *path)
 	else if (strcmp(path, "-") == 0)
 	{
 		dir = getenv("OLDPWD");
-		printf("%s\n", dir);
+		if (dir == NULL)
+		{
+			perror("No previous directory set.");
+			return;
+		}
 	}
 	else
 	{
@@ -32,15 +36,28 @@ void cd(char *path)
 
 	if (chdir(dir) != 0)
 	{
-		fprintf(stderr, "cd: %s: No such file or directory\n", dir);
+		perror("chdir() error");
 	}
 	else
 	{
 		char cwd[1024];
 
-		getcwd(cwd, sizeof(cwd));
-		setenv("OLDPWD", getenv("PWD"), 1);
-		setenv("PWD", cwd, 1);
+		if (getcwd(cwd, sizeof(cwd)) == NULL) {
+			perror("getcwd() error");
+			return;
+		}
+
+		if (setenv("OLDPWD", getenv("PWD"), 1) == -1)
+		{
+			perror("setenv() error");
+			return;
+		}
+		
+		if (setenv("PWD", cwd, 1) == -1)
+		{
+			perror("setenv() error");
+			return;
+		}
 	}
 }
 /**

@@ -1,50 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include "shell.h"
 
-#define MAX_LINE 1024
-
+#define BUFFER_SIZE 1024
 /**
-  *my_getline() - name of the function that takes no arguments
-  *my_getline:a line of text from the input source
-  *Return:pointer to a character, which represents a string
-  *@void: It means that takes no arguments
+  *customGetLine - name of the function
+  *
+  * Rwturn: pointer to a character, which represents a string
   */
-char *my_getline(void)
+char *customGetLine(void)
 {
-	char buf[MAX_LINE];
-	int pos = 0;
-	int size = 0;
+	static char buffer[BUFFER_SIZE];
+	static int position = 0;
+	static int bufferLength = 0;
 
 	char *line = NULL;
 
 	while (1)
 	{
-		if (pos >= size)
+		if (position >= bufferLength)
 		{
-			size = read(STDIN_FILENO, buf, MAX_LINE);
+			bufferLength = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 
-			if (size <= 0)
+			if (bufferLength <= 0)
 			{
 				return (NULL);
 			}
-			pos = 0;
-		}
 
-		if (buf[pos] == '\n')
+            position = 0;
+        }
 
-			buf[pos] = '\0';
-			line = malloc(pos + 1);
+	if (buffer[position] == '\n')
+	{
+		buffer[position] = '\0';
+		line = malloc(position + 1);
 
-			if (line == NULL)
-			{
-				perror("malloc failed");
-				exit(EXIT_FAILURE);
-			}
-			strncpy(line, buf, pos + 1);
-			pos++;
-			return (line);
-			pos++;
-	}
+            if (line == NULL)
+            {
+                perror("malloc failed");
+                exit(EXIT_FAILURE);
+            }
+	    strncpy(line, buffer, position + 1);
+            position++;
+            return (line);
+        }
+	position++;
+    }
+}
+
+int main(void)
+{
+    printf("Enter a line of text: ");
+
+    char *line = customGetLine();
+
+    if (line != NULL)
+    {
+	    printf("Line: %s\n", line);
+	    free(line);
+    }
+    else
+    {
+	    printf("No input received.\n");
+    }
+    return (0);
 }
