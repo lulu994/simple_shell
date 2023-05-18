@@ -1,13 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include "shell.h"
 
-extern char **environ;
-
-int main() {
+int main(void) {
     char *command = NULL;
     size_t command_length = 0;
     ssize_t read;
@@ -22,36 +15,27 @@ int main() {
             if (command == NULL) {
                 perror("Error reading command");
             } else {
-                write(STDOUT_FILENO, "End of file reached. Exiting...\n", 31);
+                write(STDOUT_FILENO, "End of file reached\n", 21);
             }
             break;
         }
-
-        // Remove the newline character at the end
-        command[strcspn(command, "\n")] = '\0';
-
-        pid_t pid = fork();
-        if (pid == -1) {
+	pid_t pid = fork();
+        
+	if (pid == -1) {
             perror("Error forking process");
             continue;
         } else if (pid == 0) {
-            // Child process
-            // Execute the command using execve()
+
             char *args[] = {command, NULL};
             execve(command, args, environ);
-
-            // If execve returns, there was an error
-            write(STDOUT_FILENO, "Command not found: ", 19);
+	    write(STDOUT_FILENO, "Command not found: ", 19);
             write(STDOUT_FILENO, command, strlen(command));
             write(STDOUT_FILENO, "\n", 1);
             _exit(1);
         } else {
-            // Parent process
-            int status;
+		int status;
             waitpid(pid, &status, 0);
-
-            // Check if the child process terminated
-            if (status != 0) {
+	    if (status != 0) {
                 write(STDOUT_FILENO, "Command not found: ", 19);
                 write(STDOUT_FILENO, command, strlen(command));
                 write(STDOUT_FILENO, "\n", 1);
