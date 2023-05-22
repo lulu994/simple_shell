@@ -7,5 +7,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#define PATH_MAX_LENGTH 1024
+#define PATH_DELIMITER ":"
+
 extern char **environ;
+
 #endif
