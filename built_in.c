@@ -105,8 +105,7 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 		return;
 	}
 	name = args[1], value = args[2];
-	name_len = _strlen(name);
-	value_len = _strlen(value);
+	name_len = _strlen(name), value_len = _strlen(value);
 	len = name_len + value_len + 2;
 	if (!name_len || !value_len)
 	{
@@ -122,13 +121,15 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
 	index = find_path_index(name);
 	if (index != -1)
-		environ[index] = str;
+	{
+		environ[index] = environ[index + 1];
+	}
 	else
 	{
 		while (environ[i])
 			i++;
 		environ[i] = str;
-		environ[++i] = NULL;
+		environ[i + 1] = NULL;
 	}
 }
 
@@ -147,13 +148,9 @@ void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 	index = find_path_index(name);
 	if (index != -1)
 	{
-		while (environ[index])
-		{
-			environ[index] = environ[index + 1];
-			index++;
-		}
+		environ[index] = environ[index + 1];
 	}
 	else
-		_puts("Can't unset non exist environment variable\n");
+		perror("unsetenv fails");
 }
 
