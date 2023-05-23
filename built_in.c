@@ -19,29 +19,23 @@ void our_cd(char **args, __attribute__((unused)) char *line)
 	{
 		index = find_path_index("HOME");
 		chdir((environ[index]) + 5);
-		cd_setenv("OLDPWD", pwd);
 	}
 	else if (_strcmp(args[1], "-") == 0)
 	{
 		index = find_path_index("OLDPWD");
 		if (index != -1)
-		{
 			chdir((environ[index]) + 7);
-			cd_setenv("OLDPWD", pwd);
-		}
 		else
-		{
-			_puts("cd: OLDPWD not set\n");
-			cd_setenv("OLDPWD", pwd);
-		}
+			perror("cd: ");
 	}
 	else
 	{
 		if (chdir(args[1]) == -1)
 		{
-			_puts("[File Name]: cd: No such file or directory\n");
+			perror("NO such file or directory.");
 		}
 	}
+	cd_setenv("OLDPWD", pwd);
 	free(buf);
 	free(pwd);
 }
@@ -69,7 +63,7 @@ void our_env(__attribute__((unused)) char **a, __attribute__((unused)) char *b)
  */
 void our_exit(char **args, char *line)
 {
-	int status = 0;
+	int status = EXIT_FAILURE;
 	int i = 0;
 
 	if (args[1])
@@ -84,7 +78,7 @@ void our_exit(char **args, char *line)
 			status = _atoi(args[1]);
 	}
 	else
-		status = 0;
+		status = status;
 
 	free(line);
 	free_arr(args);
@@ -107,36 +101,35 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 
 	if (!args[1] || !args[2])
 	{
-		_puts("can't set enpty variable\n");
+		perror("set error: ");
 		return;
 	}
 	name = args[1], value = args[2];
 	name_len = _strlen(name);
 	value_len = _strlen(value);
 	len = name_len + value_len + 2;
-	if (!name_len || !value_len || ((name_len == 1) && (*name == '=')))
+	if (!name_len || !value_len)
 	{
-		_puts("can't set enpty variable\n");
+		perror("set error: ");
 		return;
 	}
 	str = malloc(len * sizeof(char));
 	if (!str)
 	{
-		_puts("Allocations fails");
+		perror("Allocations fails");
 		return;
 	}
 	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
 	index = find_path_index(name);
 	if (index != -1)
-		environ[index] = _strdup(str);
+		environ[index] = str;
 	else
 	{
 		while (environ[i])
 			i++;
-		environ[i] = _strdup(str);
+		environ[i] = str;
 		environ[++i] = NULL;
 	}
-	free(str);
 }
 
 /**
