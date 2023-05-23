@@ -87,6 +87,11 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 
+/**
+ * cd_setenv - sets environment variable name
+ * @name: name of the environment variable we need to set
+ * @value: the value to assign to the name variable
+ */
 void cd_setenv(char *name, char *value)
 {
 	int index;
@@ -114,7 +119,7 @@ void cd_setenv(char *name, char *value)
 	}
 	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
 	index = find_path_index(name);
-	if (index != -1 )
+	if (index != -1)
 		environ[index] = str;
 	else
 	{

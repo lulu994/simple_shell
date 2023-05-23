@@ -34,12 +34,10 @@ void interactive(char *argv[], char *env[])
 	{
 		write(STDOUT_FILENO, "#Home$ ", 7);
 		fflush(stdout);
-		line = read_line();
-		args = parse_line(line, DLMT);
+		line = read_line(), args = parse_line(line, DLMT);
 		if (!args[0])
 		{
-			free(line);
-			free_arr(args);
+			free(line), free_arr(args);
 			continue;
 		}
 		else if (!is_built_in(args, line))
@@ -57,14 +55,11 @@ void interactive(char *argv[], char *env[])
 			}
 			else
 				handle_exec_err(argv, args, cmd_counter);
-			free(line);
-			free_arr(args);
-			cmd_counter++;
+			free(line), free_arr(args), cmd_counter++;
 		}
 		else
 		{
-			free(line);
-			free_arr(args);
+			free(line), free_arr(args);
 		}
 	}
 }

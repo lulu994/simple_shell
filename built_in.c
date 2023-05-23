@@ -111,9 +111,9 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 		return;
 	}
 	name = args[1], value = args[2];
-        name_len = _strlen(name);
-        value_len = _strlen(value);
-        len = name_len + value_len + 2;
+	name_len = _strlen(name);
+	value_len = _strlen(value);
+	len = name_len + value_len + 2;
 	if (!name_len || !value_len || ((name_len == 1) && (*name == '=')))
 	{
 		_puts("can't set enpty variable\n");
@@ -127,7 +127,7 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 	}
 	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
 	index = find_path_index(name);
-	if (index != -1 )
+	if (index != -1)
 		environ[index] = _strdup(str);
 	else
 	{
@@ -141,8 +141,8 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 
 /**
  * our_unsetenv - unset the environment variable name
- * @name: the var to unset
- * Return: 0 on success otherwise -1
+ * @args: array of tokens containing the var name to unset args[1].
+ * @line: the input typed by the user or given by non-interactive mode.
  */
 void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 {

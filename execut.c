@@ -4,9 +4,7 @@
 /**
  * create_process - create a child process which passed the command execute in
  * @args: array contains the command and its arguments
- * @argv: arg vector.
  * @env: environ variable
- * @cmd_counter: keep tracks of how much command or a prompt happens
  * Return: same as execve.
  */
 
