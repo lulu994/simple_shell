@@ -63,7 +63,7 @@ void our_env(__attribute__((unused)) char **a, __attribute__((unused)) char *b)
  */
 void our_exit(char **args, char *line)
 {
-	int status = EXIT_FAILURE;
+	int status = EXIT_SUCCESS;
 	int i = 0;
 
 	if (args[1])
@@ -78,7 +78,7 @@ void our_exit(char **args, char *line)
 			status = _atoi(args[1]);
 	}
 	else
-		status = status;
+		status = EXIT_SUCCESS;
 
 	free(line);
 	free_arr(args);
