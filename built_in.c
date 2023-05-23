@@ -32,12 +32,11 @@ void our_cd(char **args, __attribute__((unused)) char *line)
 	{
 		if (chdir(args[1]) == -1)
 		{
-			perror("NO such file or directory.");
+			perror("error: ");
 		}
 	}
 	cd_setenv("OLDPWD", pwd);
 	free(buf);
-	free(pwd);
 }
 
 /**
@@ -101,7 +100,7 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 
 	if (!args[1] || !args[2])
 	{
-		perror("set error: ");
+		perror("set: ");
 		return;
 	}
 	name = args[1], value = args[2];
@@ -109,13 +108,13 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 	len = name_len + value_len + 2;
 	if (!name_len || !value_len)
 	{
-		perror("set error: ");
+		perror("set: ");
 		return;
 	}
 	str = malloc(len * sizeof(char));
 	if (!str)
 	{
-		perror("Allocations fails");
+		perror("Allocations fails: ");
 		return;
 	}
 	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
@@ -151,6 +150,6 @@ void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 		environ[index] = environ[index + 1];
 	}
 	else
-		perror("unsetenv fails");
+		perror("unsetenv :");
 }
 
