@@ -14,6 +14,49 @@ int _isdigit(int c)
 }
 
 /**
+ * set_env - sets an environment variable with a value.
+ * if it exist it modifies it if not it sets it.
+ * @name: name of the variable.
+ * @value: the value to set to the var name.
+ */
+
+void set_env(char *name, char *value)
+{
+	int index;
+	char *str;
+	char **envp = environ;
+	int name_len, value_len, len;
+
+	if (!name || !value)
+	{
+		perror("setenv()");
+		return;
+	}
+	name_len = _strlen(name);
+	value_len = _strlen(value);
+	len = name_len + value_len + 2;
+
+	str = malloc(len * sizeof(char));
+	if (!str)
+	{
+		perror("Allocations fails");
+		return;
+	}
+	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
+	index = find_path_index(name);
+	if (index != -1)
+		environ[index] = str;
+	else
+	{
+		while (*envp)
+			envp++;
+		*envp = str;
+		envp++;
+		*envp = NULL;
+	}
+}
+
+/**
  * _atoi - convert a string to an integer
  * @s: str
  * Return: 0 if no number found and number otherwise

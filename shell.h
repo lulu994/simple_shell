@@ -61,7 +61,7 @@ char *search_full_path(char *command);
 char **parse_path(int index, char *str);
 
 /* alx functions */
-void cd_setenv(char *name, char *value);
+void set_env(char *name, char *value);
 char *_strdup(char *src);
 int _strcmp(char *s1, char *s2);
 int _putchar(char c);

@@ -35,8 +35,9 @@ void our_cd(char **args, __attribute__((unused)) char *line)
 			perror("error: ");
 		}
 	}
-	cd_setenv("OLDPWD", pwd);
+	set_env("OLDPWD", pwd);
 	free(buf);
+	free(pwd);
 }
 
 /**
@@ -94,47 +95,17 @@ void our_exit(char **args, char *line)
  */
 void our_setenv(char *args[], __attribute__((unused)) char *line)
 {
-	char *str, *name, *value;
-	int index, name_len, value_len, len, i = 0;
+	char *name, *value;
 
-	if (!args[1] || !args[2])
+	if (!args[2] || !args[1])
 	{
-		perror("set: ");
+		perror("setenv()");
 		return;
 	}
-	name = args[1], value = args[2], name_len = _strlen(name);
-	value_len = _strlen(value);
-	len = name_len + value_len + 2;
-	if (!name_len || !value_len)
-	{
-		perror("set: ");
-		return;
-	}
-	while (name[i])
-	{
-		if (!_isupper(name[i]) && name[i] != '_')
-		{
-			perror("setenv:");
-			return;
-		} i++;
-	} str = malloc(len * sizeof(char));
-	if (!str)
-	{
-		perror("Allocations fails: ");
-		return;
-	}
-	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
-	index = find_path_index(name);
-	if (index != -1)
-		environ[index] = str;
-	else
-	{
-		while (environ[i])
-			i++;
-		environ[i] = str, environ[i + 1] = NULL;
-	}
+	name = args[1];
+	value = args[2];
+	set_env(name, value);
 }
-
 /**
  * our_unsetenv - unset the environment variable name
  * @args: array of tokens containing the var name to unset args[1].
@@ -142,22 +113,16 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
  */
 void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 {
-	int index, i = 0;
+	int index;
 	char *name = args[1];
 
 	if (!name)
 		return;
-	while (name[i])
-	{
-		if (!_isupper(name[i]) && name[i] != '_')
-			return;
-		i++;
-	}
 	index = find_path_index(name);
 	if (index != -1)
 	{
 		environ[index] = environ[index + 1];
 	}
 	else
-		perror("unsetenv :");
+		perror("unsetenv() ");
 }
