@@ -161,4 +161,3 @@ void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 	else
 		perror("unsetenv :");
 }
-
