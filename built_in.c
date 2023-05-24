@@ -112,11 +112,11 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 	}
 	while (name[i])
 	{
-		if (!isupper(name[i]) || name[i] != '_')
+		if (!_isupper(name[i]) && name[i] != '_')
 		{
-			perror("Invalid name:");
+			perror("setenv:");
 			return;
-		}
+		} i++;
 	} str = malloc(len * sizeof(char));
 	if (!str)
 	{
@@ -142,15 +142,16 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
  */
 void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 {
-	int index;
+	int index, i = 0;
 	char *name = args[1];
 
 	if (!name)
 		return;
 	while (name[i])
 	{
-		if (!isupper(name[i]) || name[i] != '_')
+		if (!_isupper(name[i]) && name[i] != '_')
 			return;
+		i++;
 	}
 	index = find_path_index(name);
 	if (index != -1)

@@ -73,4 +73,5 @@ char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);
 int _atoi(char *s);
 int _isdigit(int c);
+int _isupper(int c);
 #endif
