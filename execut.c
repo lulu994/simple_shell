@@ -23,7 +23,7 @@ void create_process(char **args, char *env[])
 	}
 	else if (pid == -1)
 	{
-		perror("Fork fails");
+		perror("Fork():");
 		exit(EXIT_FAILURE);
 	}
 	else

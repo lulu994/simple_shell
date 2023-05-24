@@ -94,24 +94,30 @@ void our_exit(char **args, char *line)
  */
 void our_setenv(char *args[], __attribute__((unused)) char *line)
 {
-	int index;
 	char *str, *name, *value;
-	int name_len, value_len, len, i = 0;
+	int index, name_len, value_len, len, i = 0;
 
 	if (!args[1] || !args[2])
 	{
 		perror("set: ");
 		return;
 	}
-	name = args[1], value = args[2];
-	name_len = _strlen(name), value_len = _strlen(value);
+	name = args[1], value = args[2], name_len = _strlen(name);
+	value_len = _strlen(value);
 	len = name_len + value_len + 2;
 	if (!name_len || !value_len)
 	{
 		perror("set: ");
 		return;
 	}
-	str = malloc(len * sizeof(char));
+	while (name[i])
+	{
+		if (!isupper(name[i]) || name[i] != '_')
+		{
+			perror("Invalid name:");
+			return;
+		}
+	} str = malloc(len * sizeof(char));
 	if (!str)
 	{
 		perror("Allocations fails: ");
@@ -120,15 +126,12 @@ void our_setenv(char *args[], __attribute__((unused)) char *line)
 	_strcpy(str, name), _strcat(str, "="), _strcat(str, value);
 	index = find_path_index(name);
 	if (index != -1)
-	{
-		environ[index] = environ[index + 1];
-	}
+		environ[index] = str;
 	else
 	{
 		while (environ[i])
 			i++;
-		environ[i] = str;
-		environ[i + 1] = NULL;
+		environ[i] = str, environ[i + 1] = NULL;
 	}
 }
 
@@ -144,6 +147,11 @@ void our_unsetenv(char *args[], __attribute__((unused)) char *line)
 
 	if (!name)
 		return;
+	while (name[i])
+	{
+		if (!isupper(name[i]) || name[i] != '_')
+			return;
+	}
 	index = find_path_index(name);
 	if (index != -1)
 	{

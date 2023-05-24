@@ -43,8 +43,7 @@ void interactive(char *argv[], char *env[])
 		else if (!is_built_in(args, line))
 		{
 			cmd_full_path = search_full_path(args[0]);
-			if (cmd_full_path || (stat(args[0], &statbuf) == 0) ||
-					(access(args[0], X_OK) == 0))
+			if (cmd_full_path || (stat(args[0], &statbuf) == 0))
 			{
 				if (cmd_full_path)
 				{
