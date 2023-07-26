@@ -18,9 +18,9 @@
 extern char **environ;
 
 /**
- * struct builtin_d - Defines the builtins functions.
+ * struct built_in - Defines the builtins functions.
  * @built: The name of the build in command.
- * @f: A pointer to the right builtin function.
+ * @func: A pointer to the right builtin function.
  */
 typedef struct built_in
 {
